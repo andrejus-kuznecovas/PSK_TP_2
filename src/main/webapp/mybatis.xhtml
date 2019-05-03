@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:f="http://xmlns.jcp.org/jsf/core"
+>
+<h:head>
+    <h:outputStylesheet name="/css/vendor/foundation.css" />
+    <h:outputStylesheet name="/css/styles.css" />
+</h:head>
+<h:body>
+
+    <div id="main" class="grid-container fluid">
+
+        <div class="grid-x section">
+            <div class="cell small-4">
+
+            </div>
+        </div>
+
+
+
+        <div class="grid-x section">
+            <div class="cell shrink small-4">
+                <h1>DRIVERS</h1>
+
+                <h4>All drivers</h4>
+                <ol>
+                    <ui:repeat value="#{myBatisDriversController.allDrivers}" var="driver">
+                        <li>
+                            #{driver.name} #{driver.surname}
+                            <b>drives:</b>
+                            <ul>
+                                <ui:repeat value="#{driver.cars}" var="car">
+                                    <li> #{car.manufacturer} #{car.model} </li>
+                                </ui:repeat>
+                            </ul>
+                        </li>
+                    </ui:repeat>
+                </ol>
+            </div>
+
+            <div class="cell shrink small-4">
+                <h1>CARS</h1>
+
+                <h4>All cars</h4>
+                <ol>
+                    <ui:repeat value="#{myBatisCarsController.allCars}" var="car">
+                        <li>
+                            #{car.manufacturer} #{car.model}
+                        </li>
+                    </ui:repeat>
+                </ol>
+
+                <h4>Add new car</h4>
+                <h:form>
+                    <!-- Manufacturer -->
+                    <div class="grid-x">
+                        <div class="cell small-8">
+                            <label>
+                                Manufacturer:
+                                <h:inputText value="#{myBatisCarsController.car.manufacturer}" />
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Model -->
+                    <div class="grid-x">
+                        <div class="cell small-8">
+                            <label>
+                                Model:
+                                <h:inputText value="#{myBatisCarsController.car.model}" />
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Driver -->
+                    <div class="grid-x">
+                        <div class="cell small-8">
+                            <label>
+                                Driver:
+                                <h:selectOneMenu value="#{myBatisCarsController.car.driverId}">
+                                    <f:selectItem itemValue="#{null}" itemLabel="No driver" />
+                                    <f:selectItems
+                                            value="#{myBatisDriversController.allDrivers}"
+                                            var="driver"
+                                            itemLabel="#{driver.name} #{driver.surname}"
+                                            itemValue="#{driver.id}" />
+                                </h:selectOneMenu>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- [Button] Create new car -->
+                    <h:commandButton
+                            class="button primary"
+                            value="Add car"
+                            action="#{myBatisCarsController.addCar}" />
+
+                </h:form>
+            </div>
+
+        </div>
+    </div>
+
+
+
+    <h:outputScript name="js/vendor/jquery-3.3.1.js"/>
+    <h:outputScript name="js/vendor/foundation.js" />
+</h:body>
+</html>
