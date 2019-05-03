@@ -2,31 +2,100 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
 >
 <h:head>
     <h:outputStylesheet name="/css/vendor/foundation.css" />
+    <h:outputStylesheet name="/css/styles.css" />
 </h:head>
 <h:body>
 
     <div id="main" class="grid-container fluid">
 
-        <div class="grid-x">
+        <div class="grid-x section">
+            <div class="cell small-4">
+                <h4>
+                    Cause
+                    <b>OptimisticLockException</b>
+                </h4>
+                <h:form>
+                    <h:commandButton
+                        class="button"
+                        value="Modify car"
+                        action="#{exceptionController.modifyCar}"
+                    />
+                </h:form>
+
+                <h:form>
+                    <h:commandButton
+                        class="button warning"
+                        value="Modify same car but quicker"
+                        action="#{exceptionController.modifyCarButFaster}"
+                    />
+                </h:form>
+
+                <br />
+
+                <h4>
+                    Handle
+                    <b>OptimisticLockException</b>
+                </h4>
+
+                <h:form>
+                    <h:commandButton
+                            class="button"
+                            value="Safely modify car"
+                            action="#{exceptionController.modifyCarSafe}"
+                    />
+                </h:form>
+
+                <h:form>
+                    <h:commandButton
+                            class="button warning"
+                            value="Modify same car but quicker and safer"
+                            action="#{exceptionController.modifyCarButFasterAndSafer}"
+                    />
+                </h:form>
+            </div>
+
+            <div class="cell small-4">
+                <h4>Generate license plate numbers async</h4>
+                <h:form>
+                    <h:commandButton
+                            class="button"
+                            value="Generate plate numbers"
+                            action="#{licensePlateController.generateLicensePlateNumbers}"
+                    />
+                </h:form>
+                <p>#{licensePlateController.licensePlate}</p>
+            </div>
+        </div>
+
+        <div class="grid-x section">
             <div class="cell small-4">
                 <h1>SHOPS</h1>
 
-                <h4>All shops</h4>
-                <ul>
-                    <ui:repeat value="#{shopController.allShops}" var="shop">
-                        <li>
-                            #{shop.name} (#{shop.address})
-                            <b>currently services:</b>
-                            <ui:repeat value="#{shop.cars}" var="car">
-                                #{car.manufacturer} #{car.model},
+                <div class="grid-x">
+                    <div class="cell small-8">
+                        <h4>All shops</h4>
+                        <ol>
+
+                            <ui:repeat value="#{shopController.allShops}" var="shop">
+                                <li>
+                                    #{shop.name} (#{shop.address})
+                                    <b>currently services:</b>
+                                    <ul>
+                                        <ui:repeat value="#{shop.cars}" var="car">
+                                            <li> #{car.manufacturer} #{car.model} </li>
+                                        </ui:repeat>
+                                    </ul>
+                                </li>
                             </ui:repeat>
-                        </li>
-                    </ui:repeat>
-                </ul>
+                        </ol>
+                    </div>
+                </div>
+
             </div>
 
             <div class="cell small-4">
@@ -78,7 +147,7 @@
                             <!-- Cars -->
                             <h:selectOneMenu value="#{shopController.car.id}">
                                 <f:selectItems
-                                        value="#{carAndDriverController.carsNotInRepair}"
+                                        value="#{carController.carsNotInRepair}"
                                         var="car"
                                         itemLabel="#{car.manufacturer} #{car.model}"
                                         itemValue="#{car.id}" />
@@ -97,30 +166,35 @@
 
 
 
-        <div class="grid-x">
+        <div class="grid-x section">
             <div class="cell shrink small-4">
                 <h1>DRIVERS</h1>
 
                 <h4>All drivers</h4>
-                <ul>
-                    <ui:repeat value="#{carAndDriverController.allDrivers}" var="driver">
+                <ol>
+                    <ui:repeat value="#{driverController.allDrivers}" var="driver">
                         <li>
                             #{driver.name} #{driver.surname} <b>drives:</b>
-                            <ui:repeat value="#{driver.cars}" var="car">
-                                #{car.manufacturer} #{car.model},
-                            </ui:repeat>
+                            <ul>
+                                <ui:repeat value="#{driver.cars}" var="car">
+                                    <li> #{car.manufacturer} #{car.model} </li>
+                                </ui:repeat>
+                            </ul>
+
                         </li>
                     </ui:repeat>
-                </ul>
+                </ol>
 
                 <h4>Add new driver</h4>
                 <h:form>
+
+
                     <!-- Name -->
                     <div class="grid-x">
                         <div class="cell small-8">
                             <label>
                                 Name:
-                                <h:inputText value="#{carAndDriverController.driver.name}" />
+                                <h:inputText value="#{driverController.driver.name}" />
                             </label>
                         </div>
                     </div>
@@ -130,7 +204,7 @@
                         <div class="cell small-8">
                             <label>
                                 Surname:
-                                <h:inputText value="#{carAndDriverController.driver.surname}" />
+                                <h:inputText value="#{driverController.driver.surname}" />
                             </label>
                         </div>
                     </div>
@@ -139,7 +213,7 @@
                     <h:commandButton
                         class="button primary"
                         value="Add driver"
-                        action="#{carAndDriverController.addDriver}" />
+                        action="#{driverController.addDriver}" />
                 </h:form>
             </div>
 
@@ -148,17 +222,23 @@
 
                 <h4>Without drivers</h4>
                 <ul>
-                    <ui:repeat value="#{carAndDriverController.carsWithoutDrivers}" var="car">
+                    <ui:repeat value="#{carController.carsWithoutDrivers}" var="car">
                         <li>#{car.manufacturer} #{car.model}</li>
                     </ui:repeat>
                 </ul>
 
+
                 <h4>With drivers</h4>
                 <ul>
-                    <ui:repeat value="#{carAndDriverController.carsWithDrivers}" var="car">
-                        <li>#{car.manufacturer} #{car.model} <b>driven by:</b> #{car.driver.name} #{car.driver.surname}</li>
+                    <ui:repeat value="#{carController.carsWithDrivers}" var="car">
+                        <li>
+                            #{car.manufacturer} #{car.model}
+                            <b>driven by:</b>
+                            #{car.driver.name} #{car.driver.surname}
+                        </li>
                     </ui:repeat>
                 </ul>
+
 
                 <h4>Add new car</h4>
                 <h:form>
@@ -167,7 +247,9 @@
                         <div class="cell small-8">
                             <label>
                                 Manufacturer:
-                                <h:inputText value="#{carAndDriverController.car.manufacturer}" />
+
+                                <h:inputText value="#{carController.car.manufacturer}" />
+
                             </label>
                         </div>
                     </div>
@@ -177,7 +259,7 @@
                         <div class="cell small-8">
                             <label>
                                 Model:
-                                <h:inputText value="#{carAndDriverController.car.model}" />
+                                <h:inputText value="#{carController.car.model}" />
                             </label>
                         </div>
                     </div>
@@ -187,10 +269,10 @@
                         <div class="cell small-8">
                             <label>
                                 Driver:
-                                <h:selectOneMenu value="#{carAndDriverController.driver.id}">
+                                <h:selectOneMenu value="#{carController.driver.id}">
                                     <f:selectItem itemValue="#{null}" itemLabel="No driver" />
                                     <f:selectItems
-                                            value="#{carAndDriverController.allDrivers}"
+                                            value="#{driverController.allDrivers}"
                                             var="driver"
                                             itemLabel="#{driver.name} #{driver.surname}"
                                             itemValue="#{driver.id}" />
@@ -198,13 +280,12 @@
                             </label>
                         </div>
                     </div>
-                    <label>Driver:</label>
 
                     <!-- [Button] Create new car -->
                     <h:commandButton
                             class="button primary"
                             value="Add car"
-                            action="#{carAndDriverController.addCar}" />
+                            action="#{carController.addCar}" />
 
                 </h:form>
             </div>
@@ -217,9 +298,9 @@
                         <div class="cell small-8">
                             <label>
                                 Old driver:
-                                <h:selectOneMenu value="#{carAndDriverController.driver.id}" >
+                                <h:selectOneMenu value="#{driverController.driver.id}" >
                                     <f:selectItems
-                                            value="#{carAndDriverController.allDrivers}"
+                                            value="#{driverController.allDrivers}"
                                             var="driver"
                                             itemLabel="#{driver.name} #{driver.surname}"
                                             itemValue="#{driver.id}" />
@@ -233,9 +314,9 @@
                         <div class="cell small-8">
                             <label>
                                 The car he now drives:
-                                <h:selectOneMenu value="#{carAndDriverController.car.id}">
+                                <h:selectOneMenu value="#{driverController.car.id}">
                                     <f:selectItems
-                                            value="#{carAndDriverController.carsWithoutDrivers}"
+                                            value="#{carController.carsWithoutDrivers}"
                                             var="car"
                                             itemLabel="#{car.manufacturer} #{car.model}"
                                             itemValue="#{car.id}" />
@@ -248,7 +329,7 @@
                     <h:commandButton
                         class="button primary"
                         value="Attach car to driver"
-                        action="#{carAndDriverController.attachCarToDriver}" />
+                        action="#{driverController.attachCarToDriver}" />
                 </h:form>
             </div>
         </div>

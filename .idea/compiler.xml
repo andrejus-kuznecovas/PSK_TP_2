@@ -9,5 +9,8 @@
         <module name="PSK" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="PSK" target="1.7" />
+    </bytecodeTargetLevel>
   </component>
 </project>
