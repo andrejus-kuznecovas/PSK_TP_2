@@ -3,6 +3,6 @@ package lt.vu.mif.Configuration;
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
-@ApplicationPath("/api")
+@ApplicationPath("rest")
 public class ApiConfiguration extends Application {
 }

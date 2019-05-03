@@ -1,5 +1,7 @@
 package lt.vu.mif.Controllers;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import lt.vu.mif.Entities.Car;
 import lt.vu.mif.Repositories.CarRepository;
 
@@ -11,19 +13,26 @@ import java.util.List;
 
 @Path("/car")
 @ApplicationScoped
+@XmlRootElement
 public class ApiController {
+    public ApiController(){}
 
     @Inject
+    @XmlElement
     private CarRepository carRepository;
 
     @GET
+    @XmlElement
     public List<Car> getAll() {
+        System.out.println("I'M IN REST CALL XD");
         return carRepository.getAll();
     }
 
     @GET
     @Path("/{id}")
     public Car get(@PathParam("id") int id) {
+
+        System.out.println("I'M IN REST CALL XD WITH ID");
         return carRepository.get(id);
     }
 

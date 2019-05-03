@@ -1,5 +1,7 @@
 package lt.vu.mif.Entities;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,6 +14,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@XmlRootElement
 @EqualsAndHashCode
 @Table(name = "CARS")
 @NamedQueries({
